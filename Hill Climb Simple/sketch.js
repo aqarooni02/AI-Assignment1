@@ -1,6 +1,6 @@
 let cityCoords = [];
 let cityNames = [];
-let citiesGA = [];
+let citiesHC = [];
 let currentRoute = [];
 let bestRoute = [];
 let bestDistanceHC = Infinity;
@@ -16,7 +16,7 @@ let bestDistances = [];
 let fileLoaded = false;
 
 function preload() {
-  loadCityCoordsFromFile("coordinates_60.txt");
+  loadCityCoordsFromFile("coordinates_20.txt");
 }
 
 function setup() {
@@ -27,13 +27,13 @@ function setup() {
 
   // Load coordinates (translate by 200, 50)
   for (let i = 0; i < cityCoords.length; i++) {
-    citiesGA.push(
+    citiesHC.push(
       createVector(offSet[0] + cityCoords[i].x, offSet[1] + cityCoords[i].y)
     );
   }
 
   // Create random initial route
-  for (let i = 0; i < citiesGA.length; i++) {
+  for (let i = 0; i < citiesHC.length; i++) {
     currentRoute.push(i);
   }
   currentRoute = shuffle(currentRoute);
@@ -46,6 +46,12 @@ function draw() {
   if (!fileLoaded) return;
   background(255);
 
+  fill(0);
+  noStroke();
+  textSize(24);
+  text( "Hill Climb Simple", 500, 20)
+  text( `# of Cities ${citiesHC.length}`, 500, 50)
+
   // Draw faded edges between all cities
   // stroke(200, 50);
   // for (let i = 0; i < citiesHC.length; i++) {
@@ -55,6 +61,8 @@ function draw() {
   // }
 
   noFill();
+  strokeWeight(2)
+  stroke(0)
   rect(
     offSet[0] - citiesRectMargin[0],
     offSet[1] - citiesRectMargin[1],
@@ -75,17 +83,17 @@ function draw() {
   drawingContext.setLineDash([]); // Reset line dash
 
   // Draw cities with names
-  for (let i = 0; i < citiesGA.length; i++) {
+  for (let i = 0; i < citiesHC.length; i++) {
     if (i === currentRoute[0]) fill(34, 139, 34); // Start node - green
     else if (i === currentRoute[currentRoute.length - 1])
       fill(255, 0, 0); // End node - red
     else fill(0);
-    ellipse(citiesGA[i].x, citiesGA[i].y, 5, 5);
+    ellipse(citiesHC[i].x, citiesHC[i].y, 5, 5);
     textAlign(CENTER, CENTER);
     textSize(16);
     fill(0);
     strokeWeight(1);
-    text(cityNames[i], citiesGA[i].x, citiesGA[i].y - 15);
+    text(cityNames[i], citiesHC[i].x, citiesHC[i].y - 15);
   }
 
   // Perform hill climbing step
@@ -111,6 +119,7 @@ function draw() {
 
   // Display stats
   fill(0);
+  noStroke();
   textSize(16);
   textAlign(LEFT);
   text(`Iteration: ${iterationCount}`, 20, 80);
@@ -183,12 +192,12 @@ function drawRoute(route, showArrows) {
   beginShape();
   for (let i = 0; i < route.length; i++) {
     let cityIndex = route[i];
-    vertex(citiesGA[cityIndex].x, citiesGA[cityIndex].y);
+    vertex(citiesHC[cityIndex].x, citiesHC[cityIndex].y);
     if (showArrows && i < route.length - 1) {
-      drawArrow(citiesGA[cityIndex], citiesGA[route[i + 1]]);
+      drawArrow(citiesHC[cityIndex], citiesHC[route[i + 1]]);
     }
   }
-  vertex(citiesGA[route[0]].x, citiesGA[route[0]].y);
+  vertex(citiesHC[route[0]].x, citiesHC[route[0]].y);
   endShape();
 }
 
@@ -235,15 +244,15 @@ function calcDistanceHC(route) {
   let distance = 0;
   // Calculate distance between consecutive cities
   for (let i = 0; i < route.length - 1; i++) {
-    let cityA = citiesGA[route[i]];
-    let cityB = citiesGA[route[i + 1]];
+    let cityA = citiesHC[route[i]];
+    let cityB = citiesHC[route[i + 1]];
     if (!cityA || !cityB) return Infinity;
     distance += dist(cityA.x, cityA.y, cityB.x, cityB.y);
   }
   
   // Add distance from last city back to first city
-  let lastCity = citiesGA[route[route.length - 1]];
-  let firstCity = citiesGA[route[0]];
+  let lastCity = citiesHC[route[route.length - 1]];
+  let firstCity = citiesHC[route[0]];
   if (!lastCity || !firstCity) return Infinity;
   distance += dist(lastCity.x, lastCity.y, firstCity.x, firstCity.y);
 
@@ -271,10 +280,10 @@ function printRouteDetails() {
     let currentCity = bestRoute[i];
     let nextCity = bestRoute[(i + 1) % bestRoute.length];
     let segmentDistance = dist(
-      citiesGA[currentCity].x,
-      citiesGA[currentCity].y,
-      citiesGA[nextCity].x,
-      citiesGA[nextCity].y
+      citiesHC[currentCity].x,
+      citiesHC[currentCity].y,
+      citiesHC[nextCity].x,
+      citiesHC[nextCity].y
     );
     console.log(
       `${cityNames[currentCity]} -> ${

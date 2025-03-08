@@ -1,6 +1,6 @@
 let cityCoords = [];
 let cityNames = [];
-let citiesHC = [];
+let citiesGA = [];
 let offSet = [50, 150];
 let citiesRectMargin = [10, 10];
 let fileLoaded = false;
@@ -10,7 +10,7 @@ let populationSize = 1000;
 let mutationRate = 0.05;
 let maxGenerations = 2000;
 let crossoverRate = 0.8;
-let elitismCount = 20; // Number of best individuals to preserve
+let elitismCount = 1; // Number of best individuals to preserve
 
 let population = [];
 let fitness = [];
@@ -28,7 +28,7 @@ let bestFitness = 0;
 let bestFitnessHistory = [];
 
 function preload() {
-  loadCityCoordsFromFile("coordinates_100.txt");
+  loadCityCoordsFromFile("coordinates_20.txt");
 }
 
 function setup() {
@@ -39,14 +39,14 @@ function setup() {
 
   // Adjust coordinates based on offsets
   for (let i = 0; i < cityCoords.length; i++) {
-    citiesHC.push(
+    citiesGA.push(
       createVector(offSet[0] + cityCoords[i].x, offSet[1] + cityCoords[i].y)
     );
   }
 
   // Initialize population with random routes
   for (let i = 0; i < populationSize; i++) {
-    let route = Array.from({ length: citiesHC.length }, (_, i) => i);
+    let route = Array.from({ length: citiesGA.length }, (_, i) => i);
     shuffle(route, true);
     population.push(route);
   }
@@ -65,8 +65,16 @@ function draw() {
   if (!fileLoaded) return;
   background(255);
 
+  fill(0);
+  noStroke();
+  textSize(24);
+  text( "Genetic Algorithm", 500, 20)
+  text( `# of Cities ${citiesGA.length}`, 500, 50)
+
   // Draw the border around the cities area
   noFill();
+  strokeWeight(2)
+  stroke(0)
   rect(
     offSet[0] - citiesRectMargin[0],
     offSet[1] - citiesRectMargin[1],
@@ -80,19 +88,21 @@ function draw() {
   drawRoute(bestRoute, true);
 
   // Draw the cities and their names
-  for (let i = 0; i < citiesHC.length; i++) {
+  for (let i = 0; i < citiesGA.length; i++) {
     fill(0);
-    ellipse(citiesHC[i].x, citiesHC[i].y, 5, 5);
+    ellipse(citiesGA[i].x, citiesGA[i].y, 5, 5);
     textAlign(CENTER, CENTER);
     textSize(16);
     fill(0);
     strokeWeight(1);
-    text(cityNames[i], citiesHC[i].x, citiesHC[i].y - 15);
+    text(cityNames[i], citiesGA[i].x, citiesGA[i].y - 15);
   }
 
   // Display statistics on screen
   fill(0);
   textSize(16);
+  noStroke();
+
   textAlign(LEFT);
   text(`Generation: ${generationCount}`, 20, 80);
   text(`Initial Distance: ${initialDistanceGA.toFixed(2)}`, 20, 60);
@@ -293,8 +303,8 @@ function calcDistanceGA(route) {
   let distance = 0;
   try {
     for (let i = 0; i < route.length - 1; i++) {
-      let cityA = citiesHC[route[i]];
-      let cityB = citiesHC[route[i + 1]];
+      let cityA = citiesGA[route[i]];
+      let cityB = citiesGA[route[i + 1]];
       if (!cityA || !cityB) {
         console.error("Invalid city index:", route[i], route[i + 1]);
         return Infinity;
@@ -302,8 +312,8 @@ function calcDistanceGA(route) {
       distance += dist(cityA.x, cityA.y, cityB.x, cityB.y);
     }
     // Complete the tour by returning to the start
-    let lastCity = citiesHC[route[route.length - 1]];
-    let firstCity = citiesHC[route[0]];
+    let lastCity = citiesGA[route[route.length - 1]];
+    let firstCity = citiesGA[route[0]];
     distance += dist(lastCity.x, lastCity.y, firstCity.x, firstCity.y);
     if (isNaN(distance)) {
       console.error("NaN distance detected for route:", route);
@@ -322,12 +332,12 @@ function drawRoute(route, showArrows) {
   beginShape();
   for (let i = 0; i < route.length; i++) {
     let cityIndex = route[i];
-    vertex(citiesHC[cityIndex].x, citiesHC[cityIndex].y);
+    vertex(citiesGA[cityIndex].x, citiesGA[cityIndex].y);
     if (showArrows && i < route.length - 1) {
-      drawArrow(citiesHC[cityIndex], citiesHC[route[i + 1]]);
+      drawArrow(citiesGA[cityIndex], citiesGA[route[i + 1]]);
     }
   }
-  vertex(citiesHC[route[0]].x, citiesHC[route[0]].y);
+  vertex(citiesGA[route[0]].x, citiesGA[route[0]].y);
   endShape();
 }
 

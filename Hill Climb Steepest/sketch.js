@@ -16,7 +16,7 @@ let bestDistances = [];
 let fileLoaded = false;
 
 function preload() {
-  loadCityCoordsFromFile("coordinates_100.txt");
+  loadCityCoordsFromFile("coordinates_20.txt");
 }
 
 function setup() {
@@ -54,7 +54,15 @@ function draw() {
   //   }
   // }
 
+  fill(0);
+  noStroke();
+  textSize(24);
+  text( "Hill Climb Steepest", 500, 20)
+  text( `# of Cities ${citiesHC.length}`, 500, 50)
+
   noFill();
+  strokeWeight(2)
+  stroke(0)
   rect(
     offSet[0] - citiesRectMargin[0],
     offSet[1] - citiesRectMargin[1],
@@ -111,6 +119,7 @@ function draw() {
 
   // Display stats
   fill(0);
+  noStroke();
   textSize(16);
   textAlign(LEFT);
   text(`Iteration: ${iterationCount}`, 20, 80);
