@@ -1,0 +1,45 @@
+sketch.js:89 === Hill Climbing (40 Cities) ===
+sketch.js:90 Final Best Distance: 3782.60
+sketch.js:91 Execution Time (ms): 34849.20
+sketch.js:92 Improvement: 63.51%
+sketch.js:194 Route Details:
+sketch.js:204 H -> L : 118.70
+sketch.js:204 L -> AD : 100.90
+sketch.js:204 AD -> G : 158.81
+sketch.js:204 G -> AB : 130.25
+sketch.js:204 AB -> D : 32.02
+sketch.js:204 D -> T : 133.99
+sketch.js:204 T -> AA : 108.85
+sketch.js:204 AA -> Y : 39.82
+sketch.js:204 Y -> Z : 81.02
+sketch.js:204 Z -> AN : 50.25
+sketch.js:204 AN -> C : 124.20
+sketch.js:204 C -> V : 12.04
+sketch.js:204 V -> AJ : 229.48
+sketch.js:204 AJ -> K : 96.66
+sketch.js:204 K -> B : 83.38
+sketch.js:204 B -> AM : 115.00
+sketch.js:204 AM -> E : 88.23
+sketch.js:204 E -> N : 50.29
+sketch.js:204 N -> W : 51.89
+sketch.js:204 W -> X : 172.15
+sketch.js:204 X -> AI : 72.18
+sketch.js:204 AI -> R : 63.25
+sketch.js:204 R -> P : 63.51
+sketch.js:204 P -> U : 39.82
+sketch.js:204 U -> AH : 115.11
+sketch.js:204 AH -> AC : 172.03
+sketch.js:204 AC -> F : 108.41
+sketch.js:204 F -> AF : 36.88
+sketch.js:204 AF -> I : 205.65
+sketch.js:204 I -> AG : 161.11
+sketch.js:204 AG -> S : 186.98
+sketch.js:204 S -> A : 96.08
+sketch.js:204 A -> AK : 126.73
+sketch.js:204 AK -> M : 59.68
+sketch.js:204 M -> J : 19.10
+sketch.js:204 J -> O : 83.82
+sketch.js:204 O -> Q : 47.89
+sketch.js:204 Q -> AE : 35.78
+sketch.js:204 AE -> AL : 54.56
+sketch.js:204 AL -> H : 56.09
