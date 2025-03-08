@@ -8,7 +8,7 @@ let fileLoaded = false;
 // Genetic Algorithm Parameters
 let populationSize = 1000;
 let mutationRate = 0.05;
-let maxGenerations = 2000;
+let maxGenerations = 1000;
 let crossoverRate = 0.8;
 let elitismCount = 1; // Number of best individuals to preserve
 
@@ -22,13 +22,14 @@ let generationCount = 0;
 // Metrics
 let startTime, endTime;
 let bestDistances = [];
+let bestGenerationFound = 0;
 
 // Additional tracking for best fitness values
 let bestFitness = 0;
 let bestFitnessHistory = [];
 
 function preload() {
-  loadCityCoordsFromFile("coordinates_20.txt");
+  loadCityCoordsFromFile("coordinates_100.txt");
 }
 
 function setup() {
@@ -159,6 +160,18 @@ function draw() {
     let x = map(i, 0, maxGenerations, graphX, graphX + graphW);
     let y = map(bestDistances[i], 0, maxDistance, graphY + graphH, graphY);
     vertex(x, y);
+    
+    // Mark the best generation point
+    if (i === bestGenerationFound) {
+      push();
+      fill(255, 0, 0);
+      stroke(0);
+      strokeWeight(1);
+      ellipse(x, y, 8, 8);
+      textAlign(LEFT);
+      text(`Best:\nGeneration ${bestGenerationFound}`, x - 100, y + 10);
+      pop();
+    }
   }
   endShape();
 
@@ -209,6 +222,7 @@ function calculateFitness() {
   if (currentBestDistance < bestDistanceGA) {
     bestDistanceGA = currentBestDistance;
     bestRoute = population[bestFitnessIndex].slice();
+    bestGenerationFound = generationCount;  // Track when we found the best
   }
 
   // Track best fitness history

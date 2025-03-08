@@ -5,7 +5,7 @@ let currentRoute = [];
 let bestRoute = [];
 let bestDistanceHC = Infinity;
 let initialDistanceHC = 0;
-let maxIterations = 2000;
+let maxIterations = 1000;
 let iterationCount = 0;
 let offSet = [50, 150];
 let citiesRectMargin = [10, 10];
@@ -13,10 +13,11 @@ let citiesRectMargin = [10, 10];
 // Metrics
 let startTime, endTime;
 let bestDistances = [];
+let bestIterationFound = 0;
 let fileLoaded = false;
 
 function preload() {
-  loadCityCoordsFromFile("coordinates_20.txt");
+  loadCityCoordsFromFile("coordinates_100.txt");
 }
 
 function setup() {
@@ -183,6 +184,18 @@ function draw() {
     let x = map(i, 0, maxIterations, graphX, graphX + graphW);
     let y = map(bestDistances[i], 0, maxBestDist, graphY + graphH, graphY);
     vertex(x, y);
+    
+    // Mark the best iteration point
+    if (i === bestIterationFound) {
+      push();
+      fill(255, 0, 0);
+      stroke(0);
+      strokeWeight(1);
+      ellipse(x, y, 8, 8);
+      textAlign(LEFT);
+      text(`Best:\nIteration ${bestIterationFound}`, x - 100 , y + 10);
+      pop();
+    }
   }
   endShape();
 }
@@ -274,6 +287,9 @@ function hillClimbingStep() {
     bestDistanceHC = bestNeighborDistance;
     bestRoute = bestNeighbor.slice();
     currentRoute = bestNeighbor;
+    if (bestDistanceHC < bestDistances[bestIterationFound]) {
+      bestIterationFound = iterationCount;
+    }
   }
 }
 
